@@ -9,6 +9,7 @@ import { Chart as ChartJS,
 } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 import React from "react";
+import { useMediaQuery } from 'react-responsive'
 
 ChartJS.register(
     ArcElement, 
@@ -55,8 +56,9 @@ const barOptions = {
 };
 
 const Graph = ({title, type, data}) => {
+    const isMobile = useMediaQuery({ query: '(min-width: 300px)' })
     return(
-        <div className={type === 'pie' ? 'w-96' :'w-10/12' } style={{maxHeight:"500px", maxWidth:"700px"}}>
+        <div className={type === 'pie' ? 'w-96' :'sm:w-5/12 xs:w-full' } style={{maxHeight:"500px", maxWidth:"700px"}}>
             <h1 className='text-center text-2xl font-bold'>{title}</h1>
             {
                 type === "pie" ?

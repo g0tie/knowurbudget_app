@@ -35,10 +35,10 @@ const Dashboard  = () => {
   } , []);
 
   return (
-    <div className="App p-8">
+    <div className="App md:p-8 xs:p-0">
     <Layout.Header />
 
-    <div className='xs:flex-wrap xs:flex-col lg:flex-wrap xl:flex-nowrap flex xl:flex-row justify-evenly md:items-center'>
+    <div className='xs:flex-wrap xs:flex-col lg:flex-wrap xl:flex-nowrap flex xl:flex-row justify-evenly md:items-center xs:overflow-hidden'>
         <Layout.History />
         <Layout.Graphics />
     </div>

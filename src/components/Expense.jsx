@@ -24,7 +24,7 @@ const Expense = ({title, amount, date, type, id, remoteId}) => {
     }
 
     return (
-      <div className="hover:cursor-pointer hover:bg-gray-100 rounded-lg overflow-hidden shadow-lg max-w-md">
+      <div className="hover:cursor-pointer hover:bg-gray-100 rounded-lg overflow-hidden shadow-lg max-w-md w-96">
           <div className="px-6 py-6">
             <div className="flex flex-row justify-between">
 

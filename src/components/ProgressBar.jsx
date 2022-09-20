@@ -4,6 +4,7 @@ import { calculatePercentage } from '../helpers/common';
 import { useMainContext } from '../store/contexts';
 import { updateRemoteLimit } from '../api';
 import { getJWT } from '../store/database';
+import { useMediaQuery } from 'react-responsive'
 
 
 const ProgressBar = ({}) => {
@@ -13,6 +14,7 @@ const ProgressBar = ({}) => {
     const [limit, setLimit] = useState(state.limit.value);
     const [color, setColor] = useState("#4F46E5");
     const [progress, setProgress] = useState(calculatePercentage(state.totalExpenses, limit));
+    const isMobile = useMediaQuery({ query: '(min-width: 300px)' })
 
     function setProgressColor() {
       if (progress > 97) setColor("#dc2626")
@@ -33,7 +35,7 @@ const ProgressBar = ({}) => {
       setIsOpen(false);
     }
     return (
-      <div className="flex flex-col" style={{width: "400px"}}>
+      <div className="flex flex-col" style={{width: isMobile ? "300px" : "400px"}}>
         
         <div className="bg-gray-200  h-10" >
             <div className={`h-10`} style={{width: progress + "%", backgroundColor: color}}></div>
