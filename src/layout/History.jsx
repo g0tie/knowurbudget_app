@@ -8,7 +8,8 @@ const History = () => {
     const { state } = useMainContext();
 
     return (
-      <div className="p-4 lg:order-none xs:order-1">
+      // <div className="p-4 xl:order-none xl:flex-wrap lg:order-0 xs:order-1 lg:flex-wrap	sm:mt-6">
+      <div className="xl:order-none md:order-1 xs:order-1 xs:mt-16" >
         
         <TypeDropdown/>
         <div 

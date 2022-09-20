@@ -14,11 +14,10 @@ const Dashboard  = () => {
   useEffect( () => {
     
     async function fetchDataAndInitContext() {
-      const isUserLogged = JSON.parse( window.localStorage.getItem("logged"));
+      const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
     
       if (isUserLogged) {
         let data = await syncData(getCurrentUser(), getJWT());
-
         if (data.status === 403) {
           navigate("/login");
           return;
@@ -39,7 +38,7 @@ const Dashboard  = () => {
     <div className="App p-8">
     <Layout.Header />
 
-    <div className='xs:flex-col flex lg:flex-row justify-evenly md:items-center'>
+    <div className='xs:flex-wrap xs:flex-col lg:flex-wrap xl:flex-nowrap flex xl:flex-row justify-evenly md:items-center'>
         <Layout.History />
         <Layout.Graphics />
     </div>

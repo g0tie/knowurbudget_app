@@ -31,7 +31,7 @@ async function axiosWrapper(method, data, config, url ) {
 
     } catch (e) {
         console.error("erreur: " + e);
-        return e;
+        return e.response;
     }
 }
 
