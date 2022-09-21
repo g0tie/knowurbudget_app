@@ -19,7 +19,12 @@ function getDatetime() {
     return new Date().toISOString().slice(0, 19).replace('T', ' ');
 }
 
-
+/**
+ * Format data to the correct form for ChartJs
+ * @param {Array} expenses 
+ * @param {Array} types 
+ * @returns {Array}
+ */
 function sortExpensesByMonths(expenses, types) {
     let datasets = [];
     let colors = [
@@ -46,6 +51,11 @@ function sortExpensesByMonths(expenses, types) {
     return datasets;
 }
 
+/**
+ * Get the total sum by month of the year from user expenses
+ * @param {Array} expenses 
+ * @returns {Array} sum of the expennses sorted by months
+ */
 function totalExpensesByMonth(expenses) {
     let result = [];
     
@@ -67,7 +77,11 @@ function totalExpensesByMonth(expenses) {
 
     return result;
 }
-
+/**
+ * Sort user expenses by week
+ * @param {Array} types 
+ * @returns {Array}
+ */
 function sortExpensesByWeek(types)
 {
     let weekStart = new Date().getDate() - new Date().getDay() +1
@@ -82,6 +96,12 @@ function sortExpensesByWeek(types)
     );
 }
 
+/**
+ * Calculate the sum of all user expenses sorted by type
+ * @param {Array} expenses list of user expenses
+ * @param {Array} types list of expenses possible types
+ * @returns {Array} of the sum by types
+ */
 function getTotalExpensesByType(expenses, types)
 {
     let results = [];
@@ -104,6 +124,12 @@ function getTotalExpensesByType(expenses, types)
     return results;
 }
 
+/**
+ * Get default user data from local database and return a new formated state context
+ * @async
+ * @param { Object } state current state
+ * @returns { Object }
+ */
 async function getDefaultUserData(state)
 {
     const user =  await getData(getCurrentUser(), "users");

@@ -12,6 +12,12 @@ import { syncData } from "../api";
 
 const MainContext = React.createContext();
 
+/**
+ * Set the reudcer function to modify global state data
+ * @param {Object} state 
+ * @param {Object} action 
+ * @returns {Object} the new modified state
+ */
 function MainReducer(state, action) {
     switch (action.type) {
 
@@ -67,7 +73,11 @@ function MainReducer(state, action) {
     }
 }
 
-    
+/**
+ * Set global state context at app launch
+ * @param {React} param0 
+ * @returns 
+ */
 function MainProvider({children}) {
     let expenses = getDatas('expenses');
     let totalExpenses = calculateTotalExpenses(expenses);

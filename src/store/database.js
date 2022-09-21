@@ -32,6 +32,10 @@ const createDatabase = () =>
     `);
 }
 
+/**
+ * Create local db tables
+ * @async
+ */
 const  createTables = async () =>
 {
     try {
@@ -48,7 +52,11 @@ const  createTables = async () =>
         console.error(`Error occured: ${e}`);
     }
 }
-
+/**
+ * Delete user in local database
+ * @async
+ * @param {Number} userId 
+ */
 const deleteUserData = async (userId) => {
     try {
         await alasql(`DELETE FROM Users WHERE id = ?`, [userId]) ;
@@ -61,6 +69,12 @@ const deleteUserData = async (userId) => {
     }
 }
 
+/**
+ * Replace old user data by new data to local database
+ * @async
+ * @param {Object} data 
+ * @param {number} userId 
+ */
 const persistData = async (data, userId) => {
     try {
         await deleteUserData(userId);
@@ -78,6 +92,12 @@ const persistData = async (data, userId) => {
     }
 }
 
+/**
+ * insert Data to local database
+ * @async
+ * @param {String} table 
+ * @param {any} payload 
+ */
 const insertData = async (table,payload) =>
 {
     try {
@@ -103,6 +123,12 @@ const insertData = async (table,payload) =>
     }
 }
 
+/**
+ * Get first datas from a specific table in local db
+ * @param {Number} id 
+ * @param {String} table 
+ * @returns {any} can return an Array, String, Number
+ */
 const getData = (id, table) =>
 {
     switch (table) {
@@ -124,12 +150,24 @@ const getData = (id, table) =>
 
 }
 
+/**
+ * Get all user expenses by given type
+ * @param {Number} typeId 
+ * @param {Nulber} userId 
+ * @returns {Array}
+ */
 const getExpensesByType = (typeId, userId) => {
     if (isNaN(typeId)) return getDatas("expenses", userId);
     return alasql(`SELECT * FROM Expenses WHERE typeid = ? AND user_id = ?`, [typeId, userId])
     .map(expense => ({...expense, typeid:typeId})  );
 }
 
+/**
+ * Get the list of all elements for a given user in local db
+ * @param {String} table 
+ * @param {Number} userId 
+ * @returns {Array}
+ */
 const getDatas = (table, userId = 0) => {
     switch (table) {
         case "expenses":
@@ -147,6 +185,12 @@ const getByDate = (table, start, end, userId) => {
     return (alasql(`SELECT * from Expenses WHERE date BETWEEN ? AND ? AND user_id = ?`, [start, end, userId]));
 }
 
+/**
+ * Change a specific data in local db
+ * @param {Number} id 
+ * @param {String} table 
+ * @param {any} payload 
+ */
 const updateData = (id, table, payload) =>
 {
     switch (table) {
@@ -165,6 +209,12 @@ const updateData = (id, table, payload) =>
 
 }
 
+/**
+ * Delete user related data from given table
+ * @param {Number} id 
+ * @param {String} table 
+ * @param {Number} userId 
+ */
 const deleteData = (id, table, userId) =>
 {
     switch (table) {

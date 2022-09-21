@@ -1,5 +1,8 @@
 import * as DB from './database';
 
+/**
+ * Fill the local database with default types
+ */
 function seedTypes() {
 
     if (DB.getDatas('types').length > 0) return;

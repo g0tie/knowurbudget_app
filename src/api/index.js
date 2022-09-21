@@ -4,7 +4,14 @@ const axios = require('axios');
 const apiConfig = { headers: {
     "Content-Type": "application/json"
 }}
-
+/**
+ * Simple wrapper for axios methods
+ * @param {String} method get | delete | post 
+ * @param {Object|Array} data data element to send to server
+ * @param {Object} config custom field (ex: headers) for the request
+ * @param {String} url distant url resource to reach
+ * @returns {AxiosResponse} return an Axios response object 
+ */
 async function axiosWrapper(method, data, config, url ) {
     try {
         switch (method) {
