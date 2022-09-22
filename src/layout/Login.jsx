@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Alert from "../components/Alert";
 import { useMainContext } from "../store/contexts";
 import { getDefaultUserData } from '../helpers/common';
-import { getCurrentUser, getJWT, setCurrentUser, setJWT } from "../store/database";
+import { getCurrentUser, getJWT, setCurrentUser } from "../store/database";
 
 const Login = ({}) => {
     const [password, setPassword] = useState('');
@@ -28,12 +28,12 @@ const Login = ({}) => {
         return;
       } 
       await setCurrentUser(response.data.id);
-      await setJWT( response.data.token );
+      await dispatch({type: "setCSRF", payload: data.csrf});
 
-      let data = await syncData(getCurrentUser(), getJWT());
+      let data = await syncData(getCurrentUser(), state.csrf);
+      await dispatch({type: "setCSRF", payload: data.data.csrf});
 
       dispatch({type: "setUserData", payload: data.data});
-
       dispatch({type: "setError", payload: false});
       dispatch({type: "setLoggedState", payload: true});
       

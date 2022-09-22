@@ -3,7 +3,7 @@ import { register, syncData } from "../api";
 import Alert from "../components/Alert";
 import { useNavigate } from "react-router-dom";
 import { useMainContext } from "../store/contexts";
-import { getCurrentUser, setCurrentUser, setJWT, getJWT } from "../store/database";
+import { getCurrentUser, setCurrentUser } from "../store/database";
 
 const Register = ({}) => {
     const [password, setPassword] = useState('');
@@ -12,7 +12,7 @@ const Register = ({}) => {
     const [firstName, setFirstName] = useState('');
     const [isVisible, setVisible] = useState(false);
     const navigate = useNavigate();
-    const { dispatch } = useMainContext();
+    const { state, dispatch } = useMainContext();
 
     async function handleSubmit (e) {
       e.preventDefault();
@@ -29,17 +29,15 @@ const Register = ({}) => {
         setVisible(true);
         return;
       } 
+      await dispatch({type: "setCSRF", payload: data.csrf});
       await setCurrentUser(response.data.id);
-      await setJWT( response.data.token );
 
-      let data = await syncData(getCurrentUser(), getJWT()).data;
+      let data = await syncData(getCurrentUser(), state.csrf).data;
+      await dispatch({type: "setCSRF", payload: data.data.csrf});
       dispatch({type: "setUserData", payload: data.data});
 
       dispatch({type: "setError", payload: false});
       dispatch({type: "setLoggedState", payload: true});
-      
-
-      setJWT( JSON.parse( response.data.token ));
       
       setVisible(false);
       navigate("/");

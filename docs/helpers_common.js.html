@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: helpers/common.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: helpers/common.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {getByDate, getData, getExpensesByType, getDatas, getCurrentUser} from  "../store/database";
+
+function calculatePercentage(value, max) {
+    if (max &lt; value) return 100;
+    return (value / max) * 100;
+}
+
+function getTypeName(id) {
+    return getData(parseInt(id), 'types')?.name;
+}
+
+function calculateTotalExpenses(expenses)
+{   
+    if (!expenses) return 0;
+    return expenses.reduce((prev, curr) => prev + parseInt(curr.amount), 0);
+}
+
+function getDatetime() {
+    return new Date().toISOString().slice(0, 19).replace('T', ' ');
+}
+
+/**
+ * Format data to the correct form for ChartJs
+ * @param {Array} expenses 
+ * @param {Array} types 
+ * @returns {Array}
+ */
+function sortExpensesByMonths(expenses, types) {
+    let datasets = [];
+    let colors = [
+        '#083d77',
+        '#f97068',
+        '#f9dc5c',
+        '#7d1d3f',
+        '#2fbf71',
+        '#e86a92',
+        '#e86a92',
+        '#4f46e5'
+    ];
+
+    types.forEach((type, key) => {
+
+        datasets[key] = {
+            id: key,
+            label:type.name,
+            data: totalExpensesByMonth(expenses.filter(expense => getTypeName(expense.typeid) === type.name)),
+            backgroundColor: colors[key]
+        }
+      
+    });
+    return datasets;
+}
+
+/**
+ * Get the total sum by month of the year from user expenses
+ * @param {Array} expenses 
+ * @returns {Array} sum of the expennses sorted by months
+ */
+function totalExpensesByMonth(expenses) {
+    let result = [];
+    
+    for (let i = 0; i &lt; 12; i++) {
+        let month = i &lt; 9 ? `0${i + 1}` : i + 1;
+        let monthString = new Date().getFullYear() + '-' + month;
+        
+        result.push(expenses.map(expense => {
+            if (expense.date.includes(monthString)) {
+                return expense.amount
+            } else {
+                return 0;
+            }
+        })
+        .reduce((prev, curr) => prev + parseInt(curr), 0)
+        )
+        
+    }
+
+    return result;
+}
+/**
+ * Sort user expenses by week
+ * @param {Array} types 
+ * @returns {Array}
+ */
+function sortExpensesByWeek(types)
+{
+    let weekStart = new Date().getDate() - new Date().getDay() +1
+    let weekEnd = weekStart + 6; 
+
+    let weekStringStart = new Date().getFullYear() + `-0${new Date().getMonth() + 1}-${weekStart}`;
+    let weekStringEnd =  new Date().getFullYear() + `-0${new Date().getMonth() + 1}-${weekEnd}`;
+
+    return getTotalExpensesByType(
+        getByDate('expenses', weekStringStart, weekStringEnd, getCurrentUser()),
+        types
+    );
+}
+
+/**
+ * Calculate the sum of all user expenses sorted by type
+ * @param {Array} expenses list of user expenses
+ * @param {Array} types list of expenses possible types
+ * @returns {Array} of the sum by types
+ */
+function getTotalExpensesByType(expenses, types)
+{
+    let results = [];
+
+    types.forEach(type => {
+
+        results.push(
+            expenses.map(expense => {
+                if (getTypeName(expense.typeid) === type.name)  {
+                    return expense.amount
+                } else {
+                    return 0;
+                }
+            })
+            .reduce((prev, curr) => prev + parseInt(curr), 0)
+        );
+
+    });
+
+    return results;
+}
+
+/**
+ * Get default user data from local database and return a new formated state context
+ * @async
+ * @param { Object } state current state
+ * @returns { Object }
+ */
+async function getDefaultUserData(state)
+{
+    const user =  await getData(getCurrentUser(), "users");
+    const limit = await  await getData(getCurrentUser(), "limit");
+    const expenses = await getDatas("expenses", getCurrentUser());
+    const totalExpenses = await calculateTotalExpenses(expenses);
+
+    let newState = await {
+      ...state, 
+      limit: { value: limit.amount },
+      expenses,
+      totalExpenses,
+      user : {name:user.username},
+      logged: false
+    } ;
+
+    return newState;
+}
+
+export {
+    calculatePercentage,
+    getTypeName,
+    calculateTotalExpenses,
+    getDatetime,
+    sortExpensesByWeek,
+    sortExpensesByMonths,
+    getDefaultUserData
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#axiosWrapper">axiosWrapper</a></li><li><a href="global.html#createTables">createTables</a></li><li><a href="global.html#deleteData">deleteData</a></li><li><a href="global.html#deleteUserData">deleteUserData</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDatas">getDatas</a></li><li><a href="global.html#getDefaultUserData">getDefaultUserData</a></li><li><a href="global.html#getExpensesByType">getExpensesByType</a></li><li><a href="global.html#getTotalExpensesByType">getTotalExpensesByType</a></li><li><a href="global.html#insertData">insertData</a></li><li><a href="global.html#MainProvider">MainProvider</a></li><li><a href="global.html#MainReducer">MainReducer</a></li><li><a href="global.html#persistData">persistData</a></li><li><a href="global.html#seedTypes">seedTypes</a></li><li><a href="global.html#sortExpensesByMonths">sortExpensesByMonths</a></li><li><a href="global.html#sortExpensesByWeek">sortExpensesByWeek</a></li><li><a href="global.html#totalExpensesByMonth">totalExpensesByMonth</a></li><li><a href="global.html#updateData">updateData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Wed Sep 21 2022 12:38:39 GMT+0400 (Mauritius Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

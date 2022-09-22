@@ -3,6 +3,7 @@ import React from "react";
 import { getData, deleteData, getCurrentUser, getJWT } from "../store/database";
 import { calculateTotalExpenses } from "../helpers/common";
 import { removeRemoteExpense } from "../api";
+import { data } from "autoprefixer";
 
 const Expense = ({title, amount, date, type, id, remoteId}) => {
     const {state, dispatch} = useMainContext();
@@ -20,7 +21,9 @@ const Expense = ({title, amount, date, type, id, remoteId}) => {
         };
 
         await dispatch({type:'initContext', payload:newState});
-        remoteId && await removeRemoteExpense(remoteId, getJWT());
+
+        data = remoteId && await removeRemoteExpense(remoteId, state.csrf);
+        await dispatch({type: "setCSRF", payload:data.csrf});
     }
 
     return (

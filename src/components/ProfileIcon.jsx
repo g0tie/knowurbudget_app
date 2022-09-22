@@ -2,7 +2,7 @@ import { useState } from "react";
 import React from "react";
 import { useMainContext } from "../store/contexts";
 import { useNavigate } from "react-router-dom";
-import { setCurrentUser, remoteJWT, deleteUserData, setJWT, getCurrentUser } from "../store/database";
+import { setCurrentUser, deleteUserData, getCurrentUser } from "../store/database";
 import  {getDefaultUserData} from "../helpers/common";
 
 const ProfileIcon = ({username}) => {

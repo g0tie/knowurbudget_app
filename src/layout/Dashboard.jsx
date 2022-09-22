@@ -17,7 +17,7 @@ const Dashboard  = () => {
       const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
     
       if (isUserLogged) {
-        let data = await syncData(getCurrentUser(), getJWT());
+        let data = await syncData(getCurrentUser(), state.csrf);
         if (data.status === 403) {
           navigate("/login");
           return;

@@ -28,8 +28,9 @@ const AddExpenseBtn = () => {
             user_id: await parseInt( getCurrentUser() ),
         }
         
-        const remoteId = await addRemoteExpense(expense, getJWT());
-        expense.remoteId = remoteId;
+        const data = await addRemoteExpense(expense, state.csrf);
+        expense.remoteId = data.value;
+        await dispatch({type:"setCSRF", payload:data.csrf});
 
         await insertData('expenses', expense);
         const expenses = await  getDatas('expenses', getCurrentUser());
