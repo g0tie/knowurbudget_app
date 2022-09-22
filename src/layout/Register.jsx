@@ -29,13 +29,12 @@ const Register = ({}) => {
         setVisible(true);
         return;
       } 
-      await dispatch({type: "setCSRF", payload: data.csrf});
       await setCurrentUser(response.data.id);
 
-      let data = await syncData(getCurrentUser(), state.csrf).data;
+      let data = await syncData(getCurrentUser(), response.data.csrf).data;
       await dispatch({type: "setCSRF", payload: data.data.csrf});
-      dispatch({type: "setUserData", payload: data.data});
 
+      dispatch({type: "setUserData", payload: data.data});
       dispatch({type: "setError", payload: false});
       dispatch({type: "setLoggedState", payload: true});
       

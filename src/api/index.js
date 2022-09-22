@@ -1,9 +1,19 @@
 import { Navigate } from "react-router-dom";
 import { useMainContext, MainContext } from "../store/contexts";
 const axios = require('axios');
-const apiConfig = { headers: {
-    "Content-Type": "application/json"
-}}
+
+const apiConfig = { 
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    },
+    withCredentials: true,
+    credentials: 'same-origin',
+    mode: 'no-cors',
+}
+axios.defaults.withCredentials = true
+
 /**
  * Simple wrapper for axios methods
  * @param {String} method get | delete | post 
@@ -51,22 +61,22 @@ const login = (newUser) => {
 
 }
 
-const syncData = (userId, token) => {
-    return axiosWrapper("get", {userId, token}, apiConfig, `${process.env.REACT_APP_API_URL}/users/datas`);
+const syncData = (userId, csrf) => {
+    return axiosWrapper("get", {userId, csrf:csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/datas`);
 }
 
-function updateRemoteLimit (limit, token) {
-    return axiosWrapper("post", {limit, token}, apiConfig, `${process.env.REACT_APP_API_URL}/users/limit`);
-
-}
-
-function addRemoteExpense (expense, token) {
-    return axiosWrapper("post", {...expense, token}, apiConfig, `${process.env.REACT_APP_API_URL}/users/expenses`);
+function updateRemoteLimit (limit, csrf) {
+    return axiosWrapper("post", {limit, csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/limit`);
 
 }
 
-function removeRemoteExpense (expenseId, token) {
-    return axiosWrapper("delete", {...expenseId, token}, apiConfig, `${process.env.REACT_APP_API_URL}/users/expenses`);
+function addRemoteExpense (expense, csrf) {
+    return axiosWrapper("post", {...expense, csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/expenses`);
+
+}
+
+function removeRemoteExpense (expenseId, csrf) {
+    return axiosWrapper("delete", {...expenseId, csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/expenses`);
 
 }
 

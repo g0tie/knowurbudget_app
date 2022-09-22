@@ -47,15 +47,16 @@ function MainReducer(state, action) {
       
       case 'setUserData': {
         const userDatas = action.payload;
-        const totalExpenses = calculateTotalExpenses(userDatas.expenses);
+        const totalExpenses = calculateTotalExpenses(userDatas.user.expenses);
         const newState = {...state,
+          csrf: userDatas.csrf,
           logged: true,
           totalExpenses,
-          expenses: userDatas.expenses.map(expense => {
+          expenses: userDatas.user.expenses.map(expense => {
             return{...expense, remoteId: expense.id} 
           }),
-          user: {name: userDatas.username},
-          limit: { value: parseInt( userDatas.limit.amount) },
+          user: {name: userDatas.user.username},
+          limit: { value: parseInt( userDatas.user.limit.amount) },
         }
 
         persistData(newState, getCurrentUser());

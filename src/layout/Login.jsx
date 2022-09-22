@@ -28,17 +28,15 @@ const Login = ({}) => {
         return;
       } 
       await setCurrentUser(response.data.id);
-      await dispatch({type: "setCSRF", payload: data.csrf});
+      let data = await syncData(getCurrentUser(), response.data.csrf);
+      await dispatch({type: "setCSRF", payload: data.data.csrf}); // no token foun because set cookie not exist
 
-      let data = await syncData(getCurrentUser(), state.csrf);
-      await dispatch({type: "setCSRF", payload: data.data.csrf});
+      await console.log(state, data.data);
 
-      dispatch({type: "setUserData", payload: data.data});
+      await dispatch({type: "setUserData", payload: data.data});
       dispatch({type: "setError", payload: false});
       dispatch({type: "setLoggedState", payload: true});
       
-
-
       setVisible(false);
       navigate("/");
     }

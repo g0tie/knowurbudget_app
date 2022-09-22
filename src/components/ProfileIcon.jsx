@@ -16,7 +16,6 @@ const ProfileIcon = ({username}) => {
       try {
          await deleteUserData(getCurrentUser());
          await setCurrentUser(0);
-         await remoteJWT();
          await dispatch({type:"setLoggedState", payload: false});
 
          const newState = await getDefaultUserData(state);
