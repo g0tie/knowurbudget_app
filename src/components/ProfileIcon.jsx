@@ -4,6 +4,7 @@ import { useMainContext } from "../store/contexts";
 import { useNavigate } from "react-router-dom";
 import { setCurrentUser, deleteUserData, getCurrentUser } from "../store/database";
 import  {getDefaultUserData} from "../helpers/common";
+import {logout} from "../api/";
 
 const ProfileIcon = ({username}) => {
 
@@ -21,6 +22,7 @@ const ProfileIcon = ({username}) => {
          const newState = await getDefaultUserData(state);
          await dispatch({type:"initContext", payload: newState});
          await  window.localStorage.removeItem("logged")
+         await logout(state.csrf);
       } catch(e) {
          console.error(`Error occured: ${e}`)
       }

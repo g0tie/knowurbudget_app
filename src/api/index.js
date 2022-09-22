@@ -61,6 +61,11 @@ const login = (newUser) => {
 
 }
 
+const logout = (csrf) => {
+    return axiosWrapper("post", {csrf:csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/auth/signout`);
+
+}
+
 const syncData = (userId, csrf) => {
     return axiosWrapper("get", {userId, csrf:csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/datas`);
 }
@@ -86,5 +91,6 @@ export {
     syncData,
     updateRemoteLimit,
     addRemoteExpense,
-    removeRemoteExpense
+    removeRemoteExpense,
+    logout
 }
