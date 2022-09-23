@@ -1,4 +1,4 @@
-import * as alasql from 'alasql';
+import  alasql from 'alasql';
 
 function getCurrentUser()
 {

@@ -15,6 +15,7 @@ const TypeDropdown = ({}) => {
         <p>Sélectionner un type: </p> 
         <select 
         value={selectedType}
+        data-testid="select"
         onChange={e => sortExpenseByType(e.target.value)}
         className="ml-2 p-2 form-select appearance-none
     w-56
@@ -35,7 +36,7 @@ const TypeDropdown = ({}) => {
 
             {
                 state.types && state.types.map((type, index) => (
-                    <option key={type.id} value={type.id}>{type.name}</option>
+                    <option key={type.id} value={type.id} data-testid={type.id}>{type.name} </option>
                 ))
             }
         </select>
@@ -44,4 +45,5 @@ const TypeDropdown = ({}) => {
   }
   
 export default TypeDropdown;
+
   
