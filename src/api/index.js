@@ -16,6 +16,7 @@ axios.defaults.withCredentials = true
 
 /**
  * Simple wrapper for axios methods
+ * @async
  * @param {String} method get | delete | post 
  * @param {Object|Array} data data element to send to server
  * @param {Object} config custom field (ex: headers) for the request
