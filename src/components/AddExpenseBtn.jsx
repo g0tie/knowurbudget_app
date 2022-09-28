@@ -28,9 +28,14 @@ const AddExpenseBtn = () => {
             user_id: await parseInt( getCurrentUser() ),
         }
         
-        const data = await addRemoteExpense(expense, state.csrf);
-        expense.remoteId = data.value;
-        await dispatch({type:"setCSRF", payload:data.csrf});
+        const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
+        
+        if (isUserLogged) {
+
+            const data = await addRemoteExpense(expense, state.csrf);
+            expense.remoteId = data.value;
+            await dispatch({type:"setCSRF", payload:data.csrf});
+        }
 
         await insertData('expenses', expense);
         const expenses = await  getDatas('expenses', getCurrentUser());
