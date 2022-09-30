@@ -23,7 +23,7 @@ const Modal = ({title, action, children, isOpen, closeAction}) => {
                 </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 xs:px-6 xs:flex xs:flex-row-reverse">
-                <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 xs:ml-3 xs:w-auto xs:text-sm"
+                <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-budget text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 xs:ml-3 xs:w-auto xs:text-sm"
                     onClick={() => action()}
                 >Valider</button>
                 <button 

@@ -35,7 +35,7 @@ function sortExpensesByMonths(expenses, types) {
         '#2fbf71',
         '#e86a92',
         '#e86a92',
-        '#4f46e5'
+        '#715BFD'
     ];
 
     types.forEach((type, key) => {
