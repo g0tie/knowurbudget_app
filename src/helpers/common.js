@@ -27,16 +27,16 @@ function getDatetime() {
  */
 function sortExpensesByMonths(expenses, types) {
     let datasets = [];
-    let colors = [
-        '#083d77',
-        '#f97068',
-        '#f9dc5c',
-        '#7d1d3f',
-        '#2fbf71',
-        '#e86a92',
-        '#e86a92',
-        '#715BFD'
-    ];
+    let colors =   [
+        '#2cf6b3',
+        '#f0f757',
+        '#ffbc42',
+        '#715BFD',
+        '#ff90b3',
+        '#25ced1',
+        '#8d918b',  
+        '#8f2d56'
+      ];
 
     types.forEach((type, key) => {
 
@@ -86,10 +86,14 @@ function sortExpensesByWeek(types)
 {
     let weekStart = new Date().getDate() - new Date().getDay() +1
     let weekEnd = weekStart + 6; 
+    let month = new Date().getMonth() +1
+    month = month < 10 ? `-0${month}` : month;
 
-    let weekStringStart = new Date().getFullYear() + `-0${new Date().getMonth() + 1}-${weekStart}`;
-    let weekStringEnd =  new Date().getFullYear() + `-0${new Date().getMonth() + 1}-${weekEnd}`;
 
+    let weekStringStart = new Date().getFullYear() + `-${month}-${weekStart}`;
+    let weekStringEnd =  new Date().getFullYear() + `-${month}-${weekEnd}`;
+
+    
     return getTotalExpensesByType(
         getByDate('expenses', weekStringStart, weekStringEnd, getCurrentUser()),
         types

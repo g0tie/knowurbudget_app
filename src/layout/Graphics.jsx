@@ -13,12 +13,14 @@ const Graphics = () => {
         label: '# of Votes',
         data: sortExpensesByWeek(state.types),
         backgroundColor: [
-          '#083d77',
-          '#f97068',
-          '#f9dc5c',
-          '#7d1d3f',
-          '#2fbf71',
-          '#e86a92',
+          '#2cf6b3',
+          '#f0f757',
+          '#ffbc42',
+          '#715BFD',
+          '#ff90b3',
+          '#25ced1',
+          '#8d918b',  
+          '#8f2d56'
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -32,6 +34,8 @@ const Graphics = () => {
       },
     ],
   };
+
+  
 
   const stackedBarData = {
     labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin","Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
