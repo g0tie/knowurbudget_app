@@ -14,7 +14,6 @@ const Register = ({}) => {
     const [firstName, setFirstName] = useState('');
     const [isVisible, setVisible] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
     const { state, dispatch } = useMainContext();
 
     async function handleSubmit (e) {
@@ -25,6 +24,7 @@ const Register = ({}) => {
         password,
         email
       });
+
       if (response.status !== 200) {
         await dispatch({type:"setError", payload: response.data.message ?? response.data.errors[0].msg});
         await dispatch({type: "setLoggedState", payload: false});
@@ -32,13 +32,13 @@ const Register = ({}) => {
         return;
       } 
       await setCurrentUser(response.data.id);
-      await console.log(response.data)
+
       let data = await syncData(getCurrentUser(), response.data.csrf);
       await dispatch({type: "setCSRF", payload: data.data.csrf});
 
-      dispatch({type: "setUserData", payload: data.data});
-      dispatch({type: "setError", payload: false});
-      dispatch({type: "setLoggedState", payload: true});
+      await dispatch({type: "setUserData", payload: data.data});
+      await dispatch({type: "setError", payload: false});
+      await dispatch({type: "setLoggedState", payload: true});
       
       setVisible(false);
       navigate("/");

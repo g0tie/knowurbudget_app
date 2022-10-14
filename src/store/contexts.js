@@ -93,7 +93,7 @@ function MainProvider({children}) {
         expenses,
         totalExpenses,
         user: {
-          name:"Pablo"
+          name:"Mode hors ligne"
         },
         error:false,
         logged: false,

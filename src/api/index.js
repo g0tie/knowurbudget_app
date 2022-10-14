@@ -71,6 +71,10 @@ const syncData = (userId, csrf) => {
     return axiosWrapper("get", {userId, csrf:csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/datas`);
 }
 
+const syncDataFromLocal = (data, csrf) => {
+    return axiosWrapper("post", {data, csrf:csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/datas`);
+}
+
 function updateRemoteLimit (limit, csrf) {
     return axiosWrapper("post", {limit, csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/limit`);
 
@@ -98,5 +102,6 @@ export {
     addRemoteExpense,
     removeRemoteExpense,
     updateRemoteExpense,
-    logout
+    logout,
+    syncDataFromLocal
 }

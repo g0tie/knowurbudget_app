@@ -16,14 +16,23 @@ const Dashboard  = () => {
     
     async function fetchDataAndInitContext() {
       const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
+      const lastLog =  Math.abs( new Date( window.localStorage.getItem("lastlog")).getDate() - new Date().getDate() );
     
       if (isUserLogged) {
         let data = await syncData(getCurrentUser(), state.csrf);
         await dispatch({type: "setCSRF", payload: data.data.csrf}); 
 
         if (data.status === 403) {
-          navigate('/login');
-          return;
+
+          if (lastLog > 7) {
+            navigate('/login');
+            return;
+            
+          } else {
+            const newState = await getDefaultUserData(state);
+            await dispatch({type:"initContext", payload: newState});
+            return;
+          }
         }
         
         await dispatch({type: "setUserData", payload: data.data});
@@ -33,7 +42,7 @@ const Dashboard  = () => {
         await dispatch({type:"initContext", payload: newState});
       }
     }
-  
+    
     fetchDataAndInitContext();
   } , []);
 

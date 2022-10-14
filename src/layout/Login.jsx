@@ -24,24 +24,45 @@ const Login = ({}) => {
       });
 
       if (response.status !== 200) {
-        await console.log(response.data)
         await dispatch({type:"setError", payload: response.data.message ?? response.data.errors[0].msg});
         await dispatch({type: "setLoggedState", payload: false});
         await setVisible(true);
         return;
       } 
 
-      await setCurrentUser(response.data.id);
-      let data = await syncData(getCurrentUser(), response.data.csrf);
-      await dispatch({type: "setCSRF", payload: data.data.csrf}); // no token foun because set cookie not exist
+      window.localStorage.setItem("lastlog", new Date());
+
+      const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
       
-      
-      await dispatch({type: "setUserData", payload: data.data});
-      dispatch({type: "setError", payload: false});
-      dispatch({type: "setLoggedState", payload: true});
-      
-      setVisible(false);
-      navigate("/");
+      if (isUserLogged) {
+        let data = await syncDataFromLocal(state, response.data.csrf);
+        
+        if (data.status !== 200) {
+          await dispatch({type:"setError", payload: response.data.message ?? response.data.errors[0].msg});
+          await dispatch({type: "setLoggedState", payload: false});
+        }
+
+        await setCurrentUser(response.data.id);
+        await dispatch({type: "setCSRF", payload: data.data.csrf});
+        await dispatch({type: "setError", payload: false});
+        await dispatch({type: "setLoggedState", payload: true});
+
+        setVisible(false);
+        navigate("/");
+
+      } else {
+
+        await setCurrentUser(response.data.id);
+        let data = await syncData(getCurrentUser(), response.data.csrf);
+        await dispatch({type: "setCSRF", payload: data.data.csrf}); // no token foun because set cookie not exist
+        
+        await dispatch({type: "setUserData", payload: data.data});
+        await dispatch({type: "setError", payload: false});
+        await dispatch({type: "setLoggedState", payload: true});
+        
+        setVisible(false);
+        navigate("/");
+      }
     }
 
     async function switchToDefaultUser()
