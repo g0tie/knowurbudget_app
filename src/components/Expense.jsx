@@ -75,7 +75,7 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
 
     return (
       <>
-      <div className="hover:cursor-pointer hover:bg-gray-100 rounded-lg overflow-hidden bg-white shadow-lg max-w-md w-full mb-2" 
+      <div className="hover:cursor-pointer hover:bg-gray-100 rounded-lg bg-white shadow-lg max-w-md w-full mb-2" 
       onClick={(e) => setIsOpen(true)}
       >
           <div className="p-4">

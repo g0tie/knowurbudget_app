@@ -15,10 +15,11 @@ const History = () => {
         </div>
         <div 
         style={{
-          maxWidth:"470px",
+          maxWidth:"500px",
+          maxHeight:"600px",
           height:"100%"
         }}
-        className="flex flex-col items-center sm:w-full scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-indigo-600 scrollbar-track-gray-100  overflow-y-auto">
+        className="flex p-6 flex-col items-center sm:w-full scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-indigo-600 scrollbar-track-gray-100  overflow-y-auto">
           {
             state.expenses.map(expense => 
               <Expense key={expense.id} id={expense.id} remoteId={expense?.remoteId} title={expense.name} date={expense.date} type={getTypeName(expense.typeid)} typeId={expense.typeid} amount={expense.amount}/>
