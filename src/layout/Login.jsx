@@ -24,7 +24,8 @@ const Login = ({}) => {
       });
 
       if (response.status !== 200) {
-        await dispatch({type:"setError", payload: handleStatusCode(response.status)});
+        await console.log(response.data)
+        await dispatch({type:"setError", payload: response.data.message ?? response.data.errors[0].msg});
         await dispatch({type: "setLoggedState", payload: false});
         await setVisible(true);
         return;
