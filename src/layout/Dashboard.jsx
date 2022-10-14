@@ -2,7 +2,7 @@ import * as Layout from '../layout';
 import AddExpenseBtn from '../components/AddExpenseBtn';
 import React, { useEffect } from 'react';
 import { useMainContext } from '../store/contexts';
-import { getCurrentUser, getJWT, getData, getDatas } from '../store/database';
+import { getCurrentUser, persistData} from '../store/database';
 import { syncData } from '../api';
 import { getDefaultUserData } from '../helpers/common';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -30,19 +30,22 @@ const Dashboard  = () => {
             
           } else {
             const newState = await getDefaultUserData(state);
+            await console.log(newState)
             await dispatch({type:"initContext", payload: newState});
             return;
           }
         }
         
         await dispatch({type: "setUserData", payload: data.data});
+        await persistData(state, getCurrentUser());
     
       } else {
         const newState = await getDefaultUserData(state);
         await dispatch({type:"initContext", payload: newState});
+
       }
     }
-    
+
     fetchDataAndInitContext();
   } , []);
 

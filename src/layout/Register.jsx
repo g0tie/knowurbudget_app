@@ -3,9 +3,8 @@ import { register, syncData } from "../api";
 import Alert from "../components/Alert";
 import { useNavigate, useLocation} from "react-router-dom";
 import { useMainContext } from "../store/contexts";
-import { getCurrentUser, setCurrentUser } from "../store/database";
+import { getCurrentUser, setCurrentUser, persistData } from "../store/database";
 import AppIcon from "../components/AppIcon";
-import { handleStatusCode } from "../helpers/common";
 
 const Register = ({}) => {
     const [password, setPassword] = useState('');
@@ -28,6 +27,7 @@ const Register = ({}) => {
       if (response.status !== 200) {
         await dispatch({type:"setError", payload: response.data.message ?? response.data.errors[0].msg});
         await dispatch({type: "setLoggedState", payload: false});
+        await  window.localStorage.removeItem("logged")
         await setVisible(true);
         return;
       } 
@@ -37,6 +37,8 @@ const Register = ({}) => {
       await dispatch({type: "setCSRF", payload: data.data.csrf});
 
       await dispatch({type: "setUserData", payload: data.data});
+      await persistData(state, getCurrentUser());
+      
       await dispatch({type: "setError", payload: false});
       await dispatch({type: "setLoggedState", payload: true});
       

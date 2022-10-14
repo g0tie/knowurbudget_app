@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { login, syncData } from "../api";
+import { login, syncData, syncDataFromLocal } from "../api";
 import { useLocation, useNavigate } from 'react-router-dom'
 import Alert from "../components/Alert";
 import { useMainContext } from "../store/contexts";
 import { getDefaultUserData, handleStatusCode } from '../helpers/common';
-import { getCurrentUser, getJWT, setCurrentUser } from "../store/database";
+import { getCurrentUser, getJWT, setCurrentUser, persistData } from "../store/database";
 import AppIcon from "../components/AppIcon";
 
 const Login = ({}) => {
@@ -26,6 +26,7 @@ const Login = ({}) => {
       if (response.status !== 200) {
         await dispatch({type:"setError", payload: response.data.message ?? response.data.errors[0].msg});
         await dispatch({type: "setLoggedState", payload: false});
+        await  window.localStorage.removeItem("logged")
         await setVisible(true);
         return;
       } 
@@ -38,8 +39,10 @@ const Login = ({}) => {
         let data = await syncDataFromLocal(state, response.data.csrf);
         
         if (data.status !== 200) {
-          await dispatch({type:"setError", payload: response.data.message ?? response.data.errors[0].msg});
+          await dispatch({type:"setError", payload: response.data?.message ?? response.data.errors[0].msg});
           await dispatch({type: "setLoggedState", payload: false});
+          await  window.localStorage.removeItem("logged")
+          
         }
 
         await setCurrentUser(response.data.id);
@@ -57,6 +60,7 @@ const Login = ({}) => {
         await dispatch({type: "setCSRF", payload: data.data.csrf}); // no token foun because set cookie not exist
         
         await dispatch({type: "setUserData", payload: data.data});
+        await persistData(state, getCurrentUser());
         await dispatch({type: "setError", payload: false});
         await dispatch({type: "setLoggedState", payload: true});
         

@@ -45,6 +45,7 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
 
       const expense = {
           id,
+          remoteId,
           name: expenseTitle,
           amount: expenseAmount,
           typeid: await parseInt( expenseType ),
@@ -55,9 +56,9 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
       const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
       
       if (isUserLogged) {
-
+          console.log(expense)
           const data = await updateRemoteExpense(expense, state.csrf);
-          expense.remoteId = data.value;
+          expense.remoteId = await data.value;
           csrf = await data.data.csrf;
 
           await dispatch({type:"setCSRF", payload:data.data.csrf});

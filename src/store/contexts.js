@@ -53,14 +53,12 @@ function MainReducer(state, action) {
           logged: true,
           totalExpenses,
           expenses: userDatas.user.expenses.map(expense => {
-            return{...expense, remoteId: expense.id} 
+            return{...expense, remoteId: expense.id, typeid: expense.typeId} 
           }),
           user: {name: userDatas.user.username},
           limit: { value: parseInt( userDatas.user.limit.amount) },
         }
 
-        persistData(newState, getCurrentUser());
-        
         return newState
       }
 
