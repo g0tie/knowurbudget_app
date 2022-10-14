@@ -145,7 +145,21 @@ async function getDefaultUserData(state)
     return newState;
 }
 
+function handleStatusCode(code) {
+    switch(code) {
+        case 400:
+            return "Mauvaise saisie. Veuillez vérifier les champs"
+        case 404:
+            return "Ressource non trouvée, la ressource n'existe plus"
+        case 409:
+            return "Existe déjà."
+        case 403:
+            return "Action non autorisée"
+    }
+}
+
 export {
+    handleStatusCode,
     calculatePercentage,
     getTypeName,
     calculateTotalExpenses,

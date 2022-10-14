@@ -3,7 +3,7 @@ import { login, syncData } from "../api";
 import { useLocation, useNavigate } from 'react-router-dom'
 import Alert from "../components/Alert";
 import { useMainContext } from "../store/contexts";
-import { getDefaultUserData } from '../helpers/common';
+import { getDefaultUserData, handleStatusCode } from '../helpers/common';
 import { getCurrentUser, getJWT, setCurrentUser } from "../store/database";
 import AppIcon from "../components/AppIcon";
 
@@ -24,16 +24,17 @@ const Login = ({}) => {
       });
 
       if (response.status !== 200) {
-        await dispatch({type:"setError", payload: response.message});
+        await dispatch({type:"setError", payload: handleStatusCode(response.status)});
         await dispatch({type: "setLoggedState", payload: false});
         await setVisible(true);
         return;
       } 
+
       await setCurrentUser(response.data.id);
       let data = await syncData(getCurrentUser(), response.data.csrf);
       await dispatch({type: "setCSRF", payload: data.data.csrf}); // no token foun because set cookie not exist
-
-
+      
+      
       await dispatch({type: "setUserData", payload: data.data});
       dispatch({type: "setError", payload: false});
       dispatch({type: "setLoggedState", payload: true});
@@ -67,6 +68,7 @@ const Login = ({}) => {
         <div>
           <label htmlFor="email-address" className="sr-only">Email </label>
           <input 
+           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
           onChange={(e) => setEmail(e.target.value)}
           id="email-address" name="email" type="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email" />
         </div>

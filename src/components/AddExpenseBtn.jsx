@@ -12,7 +12,8 @@ const AddExpenseBtn = () => {
     const [type, setType] = useState(1);
     const [error, setError] = useState(false);
     const {state, dispatch} = useMainContext();
-    
+    let csrf;
+
     async function addExpense() {
         if (await title === "") {
             setError('Veuillez saisir un titre');
@@ -29,21 +30,23 @@ const AddExpenseBtn = () => {
         }
         
         const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
-        
         if (isUserLogged) {
 
             const data = await addRemoteExpense(expense, state.csrf);
-            expense.remoteId = data.value;
-            await dispatch({type:"setCSRF", payload:data.csrf});
+            expense.remoteId = await data.data.value;
+            csrf = await data.data.csrf;
+
+            await dispatch({type:"setCSRF", payload:csrf});
         }
 
         await insertData('expenses', expense);
         const expenses = await  getDatas('expenses', getCurrentUser());
         const totalExpenses = await calculateTotalExpenses(expenses);
 
-        const newState = {...state,
+        const newState = await {...state,
           expenses,
-          totalExpenses
+          totalExpenses,
+          csrf
         };
 
         await dispatch({type:'initContext', payload:newState});

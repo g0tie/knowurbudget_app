@@ -15,6 +15,7 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
     const [expenseTitle, setExpenseTitle] = useState(title);
     const [expenseAmount, setExpenseAmount] = useState(amount);
     const [expenseType, setExpenseType] = useState(typeId);
+    let csrf;
 
     async function removeExpense(id)
     {
@@ -31,7 +32,7 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
         await dispatch({type:'initContext', payload:newState});
 
         data = remoteId && await removeRemoteExpense(remoteId, state.csrf);
-        await dispatch({type: "setCSRF", payload:data.csrf});
+        await dispatch({type: "setCSRF", payload:data.data.csrf});
     }
 
     async function updateExpense()
@@ -57,7 +58,9 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
 
           const data = await updateRemoteExpense(expense, state.csrf);
           expense.remoteId = data.value;
-          await dispatch({type:"setCSRF", payload:data.csrf});
+          csrf = await data.data.csrf;
+
+          await dispatch({type:"setCSRF", payload:data.data.csrf});
       }
 
       await updateData(id, parseInt(getCurrentUser()), 'expenses', expense);
@@ -65,7 +68,8 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
       const totalExpenses = await calculateTotalExpenses(expenses);
       const newState = {...state,
         expenses,
-        totalExpenses
+        totalExpenses,
+        csrf
       };
 
       await dispatch({type:'initContext', payload:newState});
@@ -104,7 +108,7 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
       </div>
 
           <Modal 
-            isOpen={isOpen} title="Modifier la dépense" action={updateExpense} closeAction={setIsOpen} deleteAction={() => removeExpense(id)}> 
+            isOpen={isOpen} title="Modifier la dépense" action={() => updateExpense()} closeAction={() => setIsOpen(false)} deleteAction={() => removeExpense(id)}> 
             
             {
                 error &&

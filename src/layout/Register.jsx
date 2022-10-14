@@ -5,6 +5,7 @@ import { useNavigate, useLocation} from "react-router-dom";
 import { useMainContext } from "../store/contexts";
 import { getCurrentUser, setCurrentUser } from "../store/database";
 import AppIcon from "../components/AppIcon";
+import { handleStatusCode } from "../helpers/common";
 
 const Register = ({}) => {
     const [password, setPassword] = useState('');
@@ -24,16 +25,15 @@ const Register = ({}) => {
         password,
         email
       });
-
       if (response.status !== 200) {
-        await dispatch({type:"setError", payload: response.message});
+        await dispatch({type:"setError", payload: handleStatusCode(response.status)});
         await dispatch({type: "setLoggedState", payload: false});
         await setVisible(true);
         return;
       } 
       await setCurrentUser(response.data.id);
-
-      let data = await syncData(getCurrentUser(), response.data.csrf).data;
+      await console.log(response.data)
+      let data = await syncData(getCurrentUser(), response.data.csrf);
       await dispatch({type: "setCSRF", payload: data.data.csrf});
 
       dispatch({type: "setUserData", payload: data.data});
@@ -85,6 +85,7 @@ const Register = ({}) => {
           <input 
           onChange={(e) => setEmail(e.target.value)}
           value={email}
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
           id="email-address" name="email" type="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email" />
         </div>
       </div>

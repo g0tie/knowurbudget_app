@@ -19,6 +19,8 @@ const Dashboard  = () => {
     
       if (isUserLogged) {
         let data = await syncData(getCurrentUser(), state.csrf);
+        await dispatch({type: "setCSRF", payload: data.data.csrf}); 
+
         if (data.status === 403) {
           navigate('/login');
           return;
