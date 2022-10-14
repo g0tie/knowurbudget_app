@@ -18,7 +18,7 @@ const ProgressBar = ({}) => {
 
     function setProgressColor() {
       if (progress > 97) setColor("#dc2626")
-      else setColor("#715BFD")
+      else setColor("#22d3ee")
     }
 
     useEffect(() => {
@@ -37,14 +37,14 @@ const ProgressBar = ({}) => {
     }
     return (
       <div className="flex flex-col" style={{width: isMobile ? "300px" : "400px"}}>
-        
+        <h1 className='font-bold md:text-xl'>Limite mensuelle</h1>
         <div className="bg-gray-200  h-10" >
             <div className={`h-10`} style={{width: progress + "%", backgroundColor: color}}></div>
         </div>
         
  
       <div className="flex felx-row justify-end">
-         <span className="text-right">{state.totalExpenses} / {state.limit.value}</span>
+         <span className="text-right">{state.totalExpenses} € / {state.limit.value}</span>
          <button 
          onClick={() => setIsOpen(true)}
          style={{transform: "translateY(-13px)"}} className="text-budget text-center ml-2 shadow-lg rounded-full bg-white h-10 w-10">

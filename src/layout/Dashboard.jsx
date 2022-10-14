@@ -5,11 +5,12 @@ import { useMainContext } from '../store/contexts';
 import { getCurrentUser, getJWT, getData, getDatas } from '../store/database';
 import { syncData } from '../api';
 import { getDefaultUserData } from '../helpers/common';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Dashboard  = () => {
   const { state, dispatch } = useMainContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect( () => {
     
@@ -19,7 +20,7 @@ const Dashboard  = () => {
       if (isUserLogged) {
         let data = await syncData(getCurrentUser(), state.csrf);
         if (data.status === 403) {
-          navigate("/login");
+          navigate('/login');
           return;
         }
         
@@ -35,10 +36,10 @@ const Dashboard  = () => {
   } , []);
 
   return (
-    <div className="App md:p-8 xs:p-0">
+    <div className="App md:p-8 xs:p-0  bg-slate-50">
     <Layout.Header />
 
-    <div className='xs:flex-wrap xs:flex-col lg:flex-wrap xl:flex-nowrap flex xl:flex-row justify-evenly md:items-center xs:overflow-hidden'>
+    <div className='xs:flex-wrap xs:flex-col lg:flex-wrap xl:flex-nowrap flex xl:flex-row justify-evenly md:items-center xs:overflow-hidden' style={{minHeight:"70vh"}}>
         <Layout.History />
         <Layout.Graphics />
     </div>

@@ -1,4 +1,5 @@
 import {getByDate, getData, getExpensesByType, getDatas, getCurrentUser} from  "../store/database";
+import { seedColors } from "../store/seeders";
 
 function calculatePercentage(value, max) {
     if (max < value) return 100;
@@ -27,16 +28,7 @@ function getDatetime() {
  */
 function sortExpensesByMonths(expenses, types) {
     let datasets = [];
-    let colors =   [
-        '#2cf6b3',
-        '#f0f757',
-        '#ffbc42',
-        '#715BFD',
-        '#ff90b3',
-        '#25ced1',
-        '#8d918b',  
-        '#8f2d56'
-      ];
+    let colors = seedColors();
 
     types.forEach((type, key) => {
 

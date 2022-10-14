@@ -14,8 +14,27 @@ function seedTypes() {
         "Santé",
         "Vêtements",
         "Sport",
-        "Courses"
+        "Shopping",
+        "Impôts",
+        "Esthétique / soins",
+        "Animaux",
+        
     ].forEach(type => DB.insertData("types", {name:type}));
+}
+
+function seedColors() {
+    return [
+        '#2cf6b3',
+        '#2e3532',
+        '#ffbc42',
+        '#715BFD',
+        '#ff90b3',
+        '#25ced1',
+        '#8d918b',  
+        '#8f2d56',
+        '#3c4f76',
+        '#320e3b'
+    ]
 }
 
 async function createDefaultUser() {
@@ -40,5 +59,6 @@ async function createDefaultUser() {
 
 export {
     seedTypes,
-    createDefaultUser
+    createDefaultUser,
+    seedColors
 }

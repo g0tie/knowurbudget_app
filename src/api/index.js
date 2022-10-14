@@ -86,6 +86,10 @@ function removeRemoteExpense (expenseId, csrf) {
 
 }
 
+function updateRemoteExpense(expense, csrf) {
+    return axiosWrapper("put", {expense, csrf}, apiConfig, `${process.env.REACT_APP_API_URL}/users/expenses`);
+}
+
 export {
     register, 
     login,
@@ -93,5 +97,6 @@ export {
     updateRemoteLimit,
     addRemoteExpense,
     removeRemoteExpense,
+    updateRemoteExpense,
     logout
 }

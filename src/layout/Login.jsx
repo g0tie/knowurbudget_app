@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { login, syncData } from "../api";
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Alert from "../components/Alert";
 import { useMainContext } from "../store/contexts";
 import { getDefaultUserData } from '../helpers/common';
 import { getCurrentUser, getJWT, setCurrentUser } from "../store/database";
+import AppIcon from "../components/AppIcon";
 
 const Login = ({}) => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
     const {state, dispatch} = useMainContext();
     const [isVisible, setVisible] = useState(false);
 
@@ -22,16 +24,15 @@ const Login = ({}) => {
       });
 
       if (response.status !== 200) {
-        dispatch({type:"setError", payload: response.message});
-        dispatch({type: "setLoggedState", payload: false});
-        setVisible(true);
+        await dispatch({type:"setError", payload: response.message});
+        await dispatch({type: "setLoggedState", payload: false});
+        await setVisible(true);
         return;
       } 
       await setCurrentUser(response.data.id);
       let data = await syncData(getCurrentUser(), response.data.csrf);
       await dispatch({type: "setCSRF", payload: data.data.csrf}); // no token foun because set cookie not exist
 
-      await console.log(state, data.data);
 
       await dispatch({type: "setUserData", payload: data.data});
       dispatch({type: "setError", payload: false});
@@ -45,7 +46,6 @@ const Login = ({}) => {
     {
       await setCurrentUser(0);
       const newState = await getDefaultUserData(state);
-      await console.log(newState)
       await dispatch({type:"initContext", payload: newState});
       await navigate("/");
       await window.localStorage.removeItem("logged");
@@ -56,7 +56,7 @@ const Login = ({}) => {
         <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div className="max-w-md w-full space-y-8">
     <div>
-      <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="Workflow" />
+      <AppIcon absolute={true} />
       <h2 className="mt-6 text-center text-3xl tracking-tight font-bold text-gray-900">Connexion</h2>
     </div>
     <button onClick={switchToDefaultUser} className="underline">Utilisateur hors ligne</button>
@@ -91,7 +91,7 @@ const Login = ({}) => {
         </button>
 
         <a 
-        onClick={(e) =>  navigate("/register")}
+        onClick={() => navigate("/register")}
         type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-300 hover:cursor-pointer hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           <span className="absolute left-0 inset-y-0 flex items-center pl-3">
             <svg className="h-5 w-5 text-white group-hover:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

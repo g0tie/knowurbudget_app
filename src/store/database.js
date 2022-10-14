@@ -178,20 +178,24 @@ const getByDate = (table, start, end, userId) => {
  * @param {String} table 
  * @param {any} payload 
  */
-const updateData = (id, table, payload) =>
+const updateData = async (id, userId, table, payload) =>
 {
-    switch (table) {
-        case "expenses":
-            alasql(`UPDATE FROM Expenses SET ? WHERE user_id = ?`, [payload, id]);
-        break;
-
-        case "types":
-            alasql(`UPDATE FROM Types SET ? WHERE user_id = ?`, [payload, id]);
-        break;
-
-        case "limit":
-            alasql(`UPDATE Limit SET amount = ? WHERE user_id = ?`, [payload, id]);
-        break;
+    try {
+        switch (table) {
+            case "expenses":
+                await alasql(`UPDATE Expenses SET name = ?, amount = ?, typeid = ? WHERE id = ? AND user_id = ?`, [payload.name, payload.amount, payload.typeid, id, userId]);
+            break;
+    
+            case "types":
+                alasql(`UPDATE Types SET ? WHERE user_id = ?`, [payload, id]);
+            break;
+    
+            case "limit":
+                alasql(`UPDATE Limit SET amount = ? WHERE user_id = ?`, [payload, id]);
+            break;
+        }
+    } catch (e) {
+        console.error(e)
     }
 
 }

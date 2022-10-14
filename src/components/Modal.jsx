@@ -1,8 +1,8 @@
 import React from "react";
 
-const Modal = ({title, action, children, isOpen, closeAction}) => {
+const Modal = ({title, action, children, isOpen, closeAction, deleteAction}) => {
     return isOpen && (
-        <div data-testid="modalexpense" className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div data-testid="modalexpense" className="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
         <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -29,6 +29,14 @@ const Modal = ({title, action, children, isOpen, closeAction}) => {
                 <button 
                     onClick={() => closeAction()}
                 type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 xs:mt-0 xs:ml-3 xs:w-auto xs:text-sm">Annuler</button>
+                  
+                  { deleteAction && <button 
+                    onClick={() => deleteAction()}
+                    type="button" 
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 xs:mt-0 xs:ml-3 xs:w-auto xs:text-sm">
+                        Supprimer
+                    </button>
+                    }
                 </div>
             </div>
             </div>
