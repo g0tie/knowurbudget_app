@@ -9,74 +9,73 @@ import Modal from "./Modal";
 import { useState } from "react";
 
 const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
-    const {state, dispatch} = useMainContext();
-    const [isOpen, setIsOpen] = useState(false);
-    const [error, setError] = useState(false);
-    const [expenseTitle, setExpenseTitle] = useState(title);
-    const [expenseAmount, setExpenseAmount] = useState(amount);
-    const [expenseType, setExpenseType] = useState(typeId);
-    let csrf;
+  const {state, dispatch} = useMainContext();
+  const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState(false);
+  const [expenseTitle, setExpenseTitle] = useState(title);
+  const [expenseAmount, setExpenseAmount] = useState(amount);
+  const [expenseType, setExpenseType] = useState(typeId);
+  let csrf;
 
-    async function removeExpense(id)
-    {
-        await deleteData(id, 'expenses', getCurrentUser());
+  async function removeExpense(id)
+  {
+      await deleteData(id, 'expenses', getCurrentUser());
 
-        const expenses = await  state.expenses.filter(expense => expense.id !== id);
-        const totalExpenses = await calculateTotalExpenses(expenses);
-
-        const newState = {...state,
-          expenses,
-          totalExpenses
-        };
-
-        await dispatch({type:'initContext', payload:newState});
-
-        data = remoteId && await removeRemoteExpense(remoteId, state.csrf);
-        await dispatch({type: "setCSRF", payload:data.data.csrf});
-    }
-
-    async function updateExpense()
-    {
-      if (await title === "") {
-        setError('Veuillez saisir un titre');
-        return;
-      }
-      setError(false);
-
-      const expense = {
-          id,
-          remoteId,
-          name: expenseTitle,
-          amount: expenseAmount,
-          typeid: await parseInt( expenseType ),
-          date: date,
-          user_id: await parseInt( getCurrentUser() ),
-      }
-
-      const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
-      
-      if (isUserLogged) {
-          console.log(expense)
-          const data = await updateRemoteExpense(expense, state.csrf);
-          expense.remoteId = await data.value;
-          csrf = await data.data.csrf;
-
-          await dispatch({type:"setCSRF", payload:data.data.csrf});
-      }
-
-      await updateData(id, parseInt(getCurrentUser()), 'expenses', expense);
-      const expenses = await  getDatas('expenses', getCurrentUser());
+      const expenses = await  state.expenses.filter(expense => expense.id !== id);
       const totalExpenses = await calculateTotalExpenses(expenses);
+
       const newState = {...state,
         expenses,
-        totalExpenses,
-        csrf
+        totalExpenses
       };
 
       await dispatch({type:'initContext', payload:newState});
-      await setIsOpen(false);
-      setIsOpen(false)
+
+      data = remoteId && await removeRemoteExpense(remoteId, state.csrf);
+      await dispatch({type: "setCSRF", payload:data.data.csrf});
+  }
+
+  async function updateExpense()
+  {
+    if (await title === "") {
+      setError('Veuillez saisir un titre');
+      return;
     }
+    setError(false);
+
+    const expense = {
+        id,
+        remoteId,
+        name: expenseTitle,
+        amount: expenseAmount,
+        typeid: await parseInt( expenseType ),
+        date: date,
+        user_id: await parseInt( getCurrentUser() ),
+    }
+
+    const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
+    
+    if (state.logged) {
+        console.log(expense)
+        const data = await updateRemoteExpense(expense, state.csrf);
+        csrf = await data.data.csrf;
+
+        await dispatch({type:"setCSRF", payload:data.data.csrf});
+    }
+
+    await updateData(id, parseInt(getCurrentUser()), 'expenses', expense);
+    const expenses = await  getDatas('expenses', getCurrentUser());
+    const totalExpenses = await calculateTotalExpenses(expenses);
+    const newState = {...state,
+      expenses,
+      totalExpenses,
+      csrf
+    };
+
+    await dispatch({type:'initContext', payload:newState});
+    await setIsOpen(false);
+    setIsOpen(false)
+  }
 
     return (
       <>

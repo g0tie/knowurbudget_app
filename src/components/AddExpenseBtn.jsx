@@ -30,7 +30,7 @@ const AddExpenseBtn = () => {
         }
         
         const isUserLogged = JSON.parse( window.localStorage.getItem("logged")) ?? false;
-        if (isUserLogged) {
+        if (state.logged) {
 
             const data = await addRemoteExpense(expense, state.csrf);
             expense.remoteId = await data.data.value;
