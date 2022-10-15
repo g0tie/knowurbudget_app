@@ -3,7 +3,7 @@ import { login, syncData, syncDataFromLocal } from "../api";
 import { useLocation, useNavigate } from 'react-router-dom'
 import Alert from "../components/Alert";
 import { useMainContext } from "../store/contexts";
-import { getDefaultUserData, handleStatusCode } from '../helpers/common';
+import { calculateTotalExpenses, getDefaultUserData, handleStatusCode } from '../helpers/common';
 import { getCurrentUser, getJWT, setCurrentUser, persistData } from "../store/database";
 import AppIcon from "../components/AppIcon";
 
