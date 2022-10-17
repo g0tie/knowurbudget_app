@@ -13,7 +13,7 @@ function getTypeName(id) {
 function calculateTotalExpenses(expenses)
 {   
     if (!expenses) return 0;
-    return expenses.reduce((prev, curr) => prev + parseFloat(curr.amount), 0);
+    return expenses.reduce((prev, curr) => prev + parseFloat(curr.amount), 0).toFixed(2);
 }
 
 function getDatetime() {
