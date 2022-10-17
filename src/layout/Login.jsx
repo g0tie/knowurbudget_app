@@ -55,7 +55,7 @@ const Login = ({}) => {
         return{...expense, remoteId: expense.id, typeid: expense.typeid ?? expense.typeId} 
       }),
       user: {name: newData.username},
-      limit: { value: parseInt( newData.limit.amount) },
+      limit: { value: parseFloat( newData.limit.amount) },
       totalExpenses: calculateTotalExpenses(newData.expenses)
     }
 

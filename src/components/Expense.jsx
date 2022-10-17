@@ -47,7 +47,7 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
         id,
         remoteId,
         name: expenseTitle,
-        amount: expenseAmount,
+        amount: parseFloat(expenseAmount),
         typeid: await parseInt( expenseType ),
         date: date,
         user_id: await parseInt( getCurrentUser() ),
@@ -138,7 +138,7 @@ const Expense = ({title, amount, date, type, id, remoteId, typeId}) => {
                     Montant
                 </label>
                 <input 
-                onChange={(e) => setExpenseAmount(parseInt(e.target.value,10))}
+                onChange={(e) => setExpenseAmount(e.target.value,10)}
                 value={expenseAmount}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" placeholder="Montant en €" />
                 </div>

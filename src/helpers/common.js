@@ -13,7 +13,7 @@ function getTypeName(id) {
 function calculateTotalExpenses(expenses)
 {   
     if (!expenses) return 0;
-    return expenses.reduce((prev, curr) => prev + parseInt(curr.amount), 0);
+    return expenses.reduce((prev, curr) => prev + parseFloat(curr.amount), 0);
 }
 
 function getDatetime() {
@@ -62,7 +62,7 @@ function totalExpensesByMonth(expenses) {
                 return 0;
             }
         })
-        .reduce((prev, curr) => prev + parseInt(curr), 0)
+        .reduce((prev, curr) => prev + parseFloat(curr), 0)
         )
         
     }
@@ -112,7 +112,7 @@ function getTotalExpensesByType(expenses, types)
                     return 0;
                 }
             })
-            .reduce((prev, curr) => prev + parseInt(curr), 0)
+            .reduce((prev, curr) => prev + parseFloat(curr), 0)
         );
 
     });

@@ -23,7 +23,7 @@ const AddExpenseBtn = () => {
 
         const expense = {
             name: title,
-            amount,
+            amount: await parseFloat(amount),
             typeid: await parseInt( type ),
             date: await getDatetime(),
             userId: await parseInt( getCurrentUser() ),
@@ -97,7 +97,7 @@ const AddExpenseBtn = () => {
                     Montant
                 </label>
                 <input 
-                onChange={(e) => setAmount(parseInt(e.target.value,10))}
+                onChange={(e) => setAmount(e.target.value)}
                 value={amount}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" placeholder="Montant en €" />
                 </div>
