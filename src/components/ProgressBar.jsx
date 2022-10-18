@@ -30,7 +30,7 @@ const ProgressBar = ({}) => {
     
     async function changeLimit()
     {
-      await dispatch({type:'setLimit', payload:limit});
+      await dispatch({type:'setLimit', payload: parseFloat( limit )});
       let data = await updateRemoteLimit(limit, state.csrf);
       await dispatch({type:'setCSRF', payload:data.csrf});
       setIsOpen(false);
