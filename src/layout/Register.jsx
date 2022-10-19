@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { register, syncData } from "../api";
+import { register, syncData, syncDataFromLocal } from "../api";
 import Alert from "../components/Alert";
 import { useNavigate, useLocation} from "react-router-dom";
 import { useMainContext } from "../store/contexts";
 import { getCurrentUser, setCurrentUser, persistData } from "../store/database";
 import AppIcon from "../components/AppIcon";
+import { calculateTotalExpenses } from "../helpers/common";
 
 const Register = ({}) => {
   const [password, setPassword] = useState('');
