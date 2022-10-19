@@ -17,6 +17,8 @@ const Register = ({}) => {
 
   async function handleSubmit (e) {
     e.preventDefault();
+    const isUserLogged = await JSON.parse( window.localStorage.getItem("logged")) ?? false;
+    let csrf, data;
     
     let response = await register({
       username: firstName,
@@ -31,16 +33,41 @@ const Register = ({}) => {
       await setVisible(true);
       return;
     } 
+    csrf = response.data.csrf;
+
+    if (isUserLogged) {
+      data = await syncDataFromLocal(state, csrf);
+      csrf = data.data.csrf;
+      if (data?.status !== 200) {
+        await dispatch({type:"setError", payload: response.data?.message ?? response.data.errors[0].msg});
+        await dispatch({type: "setLoggedState", payload: false});
+        await  window.localStorage.removeItem("logged")
+      }
+    }
+
     await setCurrentUser(response.data.id);
+    data = await syncData(getCurrentUser(),csrf) ;
 
-    let data = await syncData(getCurrentUser(), response.data.csrf);
-    await dispatch({type: "setCSRF", payload: data.data.csrf});
+    const newData = data.data.user;
+    const newState = await {
+      ...state,
+      csrf: data.data.csrf,
+      logged: true,
+      expenses: newData.expenses.map(expense => {
+        return{...expense, remoteId: expense.id, typeid: expense.typeid ?? expense.typeId} 
+      }),
+      user: {name: newData.username},
+      limit: { value: parseFloat( newData.limit.amount) },
+      totalExpenses: calculateTotalExpenses(newData.expenses)
+    }
 
-    await dispatch({type: "setUserData", payload: data.data});
-    await persistData(state, getCurrentUser());
+    await dispatch({type: "setUserData", payload: newState});
+    await persistData(newState, getCurrentUser());
     
     await dispatch({type: "setError", payload: false});
     await dispatch({type: "setLoggedState", payload: true});
+    
+    await window.localStorage.setItem("lastlog", new Date());
     
     setVisible(false);
     navigate("/");
