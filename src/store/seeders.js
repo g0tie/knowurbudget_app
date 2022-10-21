@@ -25,7 +25,7 @@ function seedTypes() {
 function seedColors() {
     return [
         '#2cf6b3',
-        '#2e3532',
+        '#D90368',
         '#ffbc42',
         '#715BFD',
         '#ff90b3',
@@ -33,7 +33,7 @@ function seedColors() {
         '#8d918b',  
         '#8f2d56',
         '#3c4f76',
-        '#320e3b'
+        '#5B7553'
     ]
 }
 

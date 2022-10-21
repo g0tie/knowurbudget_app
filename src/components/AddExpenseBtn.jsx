@@ -51,6 +51,8 @@ const AddExpenseBtn = () => {
 
         await dispatch({type:'initContext', payload:newState});
         await setIsOpen(false);
+        await setTitle("");
+        await setAmount(0);
     }
 
     return (
