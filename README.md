@@ -7,3 +7,18 @@ With this application people having problems managing their budget will have key
 
 # Tech
 SQLITE, React 
+
+## Web version
+![image](https://user-images.githubusercontent.com/56622131/199684711-b43df4e0-ac1b-4071-9d16-5a3eeea6b8c0.png)
+
+## Desktop popup
+![image](https://user-images.githubusercontent.com/56622131/199685108-841421b5-e580-4c24-bbf5-7f02e8df2610.png)
+
+## Mobile version
+
+|   |   |
+|---|---|
+| ![1667467386276](https://user-images.githubusercontent.com/56622131/199685706-dd433a7a-aff6-4305-b1dc-d2b572d8d1f6.jpg)  | ![1667467386271](https://user-images.githubusercontent.com/56622131/199685725-aec98783-f877-4f7c-8f5c-ee894ca79f69.jpg)  |
+
+
+
